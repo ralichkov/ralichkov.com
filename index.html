@@ -1,0 +1,47 @@
+<pre>
+ERROR TaskSetManager: Task 12 in stage 45.0 failed 4 times; aborting job
+org.apache.spark.SparkException: Job aborted due to stage failure: Task 12 in stage 45.0 failed 4 times, most recent failure: Lost task 12.3 in stage 45.0 (TID 2010) (executor 7): java.io.IOException: Split failed to read block.
+    at org.apache.hadoop.mapreduce.lib.input.FileSplit.getLength(FileSplit.java:107)
+    at org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(FileInputFormat.java:303)
+    at org.apache.spark.rdd.NewHadoopRDD.getPartitions(NewHadoopRDD.scala:123)
+    at org.apache.spark.rdd.RDD.$anonfun$partitions$2(RDD.scala:292)
+    at scala.Option.getOrElse(Option.scala:189)
+    at org.apache.spark.rdd.RDD.partitions(RDD.scala:288)
+    ...
+Caused by: java.io.IOException: Could not open HDFS file: hdfs://namenode:8020/data/file.csv
+    at org.apache.hadoop.hdfs.DFSInputStream.openInfo(DFSInputStream.java:97)
+    at org.apache.hadoop.hdfs.DFSClient.open(DFSClient.java:408)
+    at org.apache.hadoop.hdfs.DistributedFileSystem.open(DistributedFileSystem.java:200)
+    ...
+Caused by: org.apache.hadoop.ipc.RemoteException(java.io.FileNotFoundException): File does not exist: /data/file.csv
+    at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:1323)
+    at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:706)
+    at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:451)
+    at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+    ...
+INFO DAGScheduler: ResultStage 45 (count at CountRecords.scala:50) failed in 2.003 s due to Job aborted
+WARN TaskSetManager: Lost task 12.3 in stage 45.0 (TID 2010) (executor 7): java.io.IOException: Split failed to read block.
+ERROR YarnScheduler: Lost executor 7 on node002.example.com: Executor heartbeat timed out after 30 seconds
+ERROR TaskSchedulerImpl: Lost executor 7 on node002.example.com: Executor heartbeat timed out after 30 seconds
+INFO BlockManagerMasterEndpoint: Removing block manager BlockManagerId(7, node002.example.com, 35361, None)
+INFO ClusterSchedulerBackend: Removed Executor 7
+...
+Caused by: java.net.ConnectException: Connection refused
+    at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+    at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+    at org.apache.hadoop.ipc.Client$Connection.setupIOstreams(Client.java:1006)
+    ...
+WARN YarnSchedulerBackend$YarnSchedulerEndpoint: Attempted to fetch updated block statuses from a dead executor
+ERROR BlockManagerMasterEndpoint: Removing block manager BlockManagerId(7, node002.example.com, 35361, None)
+ERROR DAGScheduler: Failed to submit a new task
+org.apache.spark.SparkException: Job aborted due to stage failure: Task 12 in stage 45.0 failed 4 times, most recent failure: Lost task 12.3 in stage 45.0 (TID 2010) (executor 7): java.io.IOException: Split failed to read block.
+    ...
+Caused by: org.apache.hadoop.hdfs.BlockMissingException: Could not obtain block blk_1234567890 for reading from node: 0
+    at org.apache.hadoop.hdfs.DFSInputStream.chooseDataNode(DFSInputStream.java:1011)
+    at org.apache.hadoop.hdfs.DFSInputStream.chooseDataNode(DFSInputStream.java:987)
+    at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:805)
+    ...
+ERROR ApplicationMaster: User class threw exception: org.apache.spark.SparkException: Job aborted due to stage failure: Task 12 in stage 45.0 failed 4 times, most recent failure: Lost task 12.3 in stage 45.0 (TID 2010) (executor 7)
+    ...
+INFO ApplicationMaster: Final app status: FAILED (diag message: User class threw exception)
+</pre>
